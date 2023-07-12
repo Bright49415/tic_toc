@@ -1,0 +1,46 @@
+import csv
+import time
+
+def tic():
+    return time.time()
+
+def toc(start_time):
+    elapsed_time = time.time() - start_time
+    return elapsed_time
+
+def job(job_name):
+    # Perform the job's task here
+    while True:
+        user_input = input("Press Enter to finish the job: ")
+        if user_input == "":
+            break
+
+job_data = []
+while True:
+    start_time = tic()
+    job_name = input("Enter the job name (or 'finish' to end): ")
+    if job_name.lower() == "finish":
+        break
+
+    print(f"Job '{job_name}' started at: {time.strftime('%Y-%m-%d %H:%M:%S')}")
+    user_input = input("Press Enter to start the job: ")
+    if user_input == "":
+        job(start_time)
+        finish_time = time.strftime('%Y-%m-%d %H:%M:%S')
+        elapsed_time = toc(start_time)
+        print(f"Job '{job_name}' finished at: {finish_time}")
+        print(f"Total execution time: {elapsed_time:.2f} seconds")
+
+        job_data.append([job_name, start_time, finish_time, elapsed_time])
+
+    else:
+        continue
+
+# Save job data to CSV file
+csv_file = "job_data.csv"
+with open(csv_file, 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(["Job Name", "Start Time", "Finish Time", "Execution Time"])
+    writer.writerows(job_data)
+
+print(f"Job data saved to {csv_file}")
